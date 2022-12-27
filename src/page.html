@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task manager</title>
+</head>
+<style>
+  #container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .child-container{
+    background-color: rgb(177, 177, 177);
+    padding: 2mm;
+    margin: 2mm;
+    border: 0.7mm solid rgb(39, 39, 39);
+    border-radius: 1mm;
+  }
+  #form{
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+<body>
+  <div id="container">
+    <div class="child-container">
+      <h2>Create new tasks</h2>
+      <form id="form" action="/submit" method="post" target="_self">
+        <label for="team-name">Team name:</label>
+        <input type="text" id="team-name" name="teamName"/>
+        
+        <label for="description">Task description:</label>
+        <textarea style="resize: none;" rows="10" cols="10" id="description" name="description"></textarea>
+
+        <label for="start-date">Start date:</label>
+        <input type="date" id="start-date" name="startDate"/>
+
+        <label for="final-date">Final date:</label>
+        <input type="date" id="final-date" name="finalDate"/>
+
+        <input type="submit" value="Submit the task"/>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
