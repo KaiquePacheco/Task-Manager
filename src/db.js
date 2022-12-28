@@ -13,7 +13,7 @@ var TaskModel = sequelize.define('Tasks', {
   team_name: DataTypes.STRING,
   description: DataTypes.STRING(511),
   start_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     defaultValue: DataTypes.NOW
   },
   final_date: DataTypes.DATE,

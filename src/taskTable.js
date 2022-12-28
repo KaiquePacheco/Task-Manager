@@ -1,4 +1,4 @@
-const {TaskModel, _} = require("./db")
+const {TaskModel, sequelize} = require("./db")
 
 async function insertTask(teamName, description, startDate, finalDate){
   const ntask = TaskModel.build({
