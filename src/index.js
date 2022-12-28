@@ -17,12 +17,12 @@ app.post("/submit", (req, res) => {
   const body = req.body
 
   if (body.startDate.length != 10 || body.finalDate.length != 10){
-    res.sendStatus(400)
+    res.send("Some data param is uncorrect or incomplete.")
     return
   }
   insertTask(body.teamName, body.description, body.startDate, body.finalDate)
 
-  res.sendStatus(200)
+  res.redirect("/")
 })
 app.get("/list_tasks", async (req, res) => {
   res.send(await listAllTasks())
