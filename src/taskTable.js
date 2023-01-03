@@ -1,4 +1,5 @@
 const {TaskModel, sequelize} = require("./db")
+const { Op } = require("sequelize")
 
 async function insertTask(teamName, description, startDate, finalDate){
   const ntask = TaskModel.build({
@@ -16,20 +17,17 @@ async function updateTaskToFinished(taskId) {
   
   await task.save()
 }
-async function listAllTasks(){
-  const tasks = await TaskModel.findAll()
 
-  return tasks
-}
-
-async function listTasksForTeamName(teamName){
+async function listAllTasks(teamName){
   const tasks = await TaskModel.findAll({
     where: {
-      team_name: teamName
+      team_name: {
+        [Op.like]: `%${teamName}%`
+      }
     }
   })
 
   return tasks
 }
 
-module.exports = {insertTask, updateTaskToFinished, listAllTasks, listTasksForTeamName}
+module.exports = {insertTask, updateTaskToFinished, listAllTasks}

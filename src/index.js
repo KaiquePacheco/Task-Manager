@@ -1,6 +1,6 @@
 require("dotenv").config()
 
-const {insertTask, updateTaskToFinished, listAllTasks, listTasksForTeamName} = require("./taskTable")
+const {insertTask, updateTaskToFinished, listAllTasks} = require("./taskTable")
 
 const express = require("express")
 var app = express()
@@ -25,10 +25,10 @@ app.post("/submit", (req, res) => {
   res.redirect("/")
 })
 app.get("/list_tasks", async (req, res) => {
-  res.send(await listAllTasks())
+  res.send(await listAllTasks(""))
 })
 app.get("/list_tasks/:team_name", async (req, res) => {
-  res.send(await listTasksForTeamName(req.params.team_name))
+  res.send(await listAllTasks(req.params.team_name))
 })
 
 app.listen(PORT, () => {

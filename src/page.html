@@ -66,14 +66,19 @@
       </form>
     </div>
     <div class="child-container">
+      <h2>Tasks</h2>
+      <input id="team-name-task-search" placeholder="insert the team name" onchange="renderSearchTasks()"/>
+      <button onclick="renderSearchTasks()">Search</button>
       <ul id="task-list"></ul>
     </div>
   </div>
 </body>
 <script>
-  let taskList = document.getElementById("task-list")
+  let tasksList = document.getElementById("task-list")
+  const taskSeach = document.getElementById("team-name-task-search")
+
   function renderTask(task){
-    taskList.insertAdjacentHTML('beforebegin',
+    tasksList.innerHTML = 
     `<li class="task-list-element">
       Team: ${task.team_name} <br/>
       <p> 
@@ -88,11 +93,15 @@
         }
         return "<span class='task-unfinished'>This task isn't finished.</span>"
       })()}
-    </li>`)
+    </li>` + tasksList.innerHTML
   }
   async function renderAllTasks(team_name){
     const tasks = await (await fetch("/list_tasks/" + team_name)).json()
+    tasksList.innerHTML = ''
     tasks.forEach(task => renderTask(task))
+  }
+  function renderSearchTasks(){
+    renderAllTasks(taskSeach.value)
   }
   renderAllTasks("")
 </script>
