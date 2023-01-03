@@ -76,10 +76,26 @@
 <script>
   let tasksList = document.getElementById("task-list")
   const taskSeach = document.getElementById("team-name-task-search")
+  
+  const finishedStatusDiv = "<span class='task-finished'>This task is finished.</span>"
+
+  async function finishTask(taskId){
+    const foundRes = await fetch("/finish_task/" + taskId, {method: "PUT"})
+    if (foundRes.status == 404){
+      console.error(await foundRes.body)
+      return 
+    }
+
+    const taskElement = 
+    document.getElementById("task-" + taskId)
+    .getElementsByClassName("task-status-div").item(0)
+    
+    taskElement.innerHTML = finishedStatusDiv
+  }
 
   function renderTask(task){
     tasksList.innerHTML = 
-    `<li class="task-list-element">
+    `<li class="task-list-element" id="task-${task.id}">
       Team: ${task.team_name} <br/>
       <p> 
         Description: <br/>
@@ -87,19 +103,25 @@
       </p> <br/>
       Start date: ${task.start_date} <br/>
       Final date: ${task.final_date} <br/>
-      ${(() => {
-        if (task.is_finished){
-          return "<span class='task-finished'>This task is finished.</span>"
-        }
-        return "<span class='task-unfinished'>This task isn't finished.</span>"
-      })()}
+      <div class="task-status-div">
+        ${(() => {
+          if (task.is_finished){
+            return finishedStatusDiv
+          }
+          return `
+          <span class='task-unfinished'>This task isn't finished.</span>
+          <br/>
+          <button class="finish-button" onclick="finishTask(${task.id})">Finish</button>`
+        })()}
+      </div>
     </li>` + tasksList.innerHTML
   }
-  async function renderAllTasks(team_name){
-    const tasks = await (await fetch("/list_tasks/" + team_name)).json()
+  async function renderAllTasks(teamName){
+    const tasks = await (await fetch("/list_tasks/" + teamName)).json()
     tasksList.innerHTML = ''
     tasks.forEach(task => renderTask(task))
   }
+
   function renderSearchTasks(){
     renderAllTasks(taskSeach.value)
   }

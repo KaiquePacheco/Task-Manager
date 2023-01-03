@@ -30,6 +30,14 @@ app.get("/list_tasks", async (req, res) => {
 app.get("/list_tasks/:team_name", async (req, res) => {
   res.send(await listAllTasks(req.params.team_name))
 })
+app.put("/finish_task/:task_id", async (req, res) => {
+  const was_found = await updateTaskToFinished(req.params.task_id)
+  if (was_found) {
+    res.send()
+    return
+  }
+  res.status(404).send("")
+})
 
 app.listen(PORT, () => {
   console.log("Server started in port " + PORT + ".")

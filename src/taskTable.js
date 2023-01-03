@@ -13,9 +13,13 @@ async function insertTask(teamName, description, startDate, finalDate){
 
 async function updateTaskToFinished(taskId) {
   const task = await TaskModel.findByPk(taskId)
+  if (task === null) {
+    return false
+  }
   task.is_finished = true
   
   await task.save()
+  return true
 }
 
 async function listAllTasks(teamName){
