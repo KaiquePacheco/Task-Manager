@@ -11,11 +11,12 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
     height: 100%;
   }
   .child-container{
     background-color: rgb(177, 177, 177);
+    width: fit-content;
+    height: fit-content;
     padding: 2mm;
     margin: 2mm;
     border: 0.7mm solid rgb(39, 39, 39);
@@ -24,6 +25,24 @@
   #form{
     display: flex;
     flex-direction: column;
+  }
+  .task-list-element{
+    background-color: rgb(216, 216, 216);
+    margin: 2mm;
+    padding: 2mm;
+    border: 0.5mm solid black;
+    border-radius: 0.9mm;
+  }
+  .task-description{
+    font-size: small;
+  }
+  .task-finished{
+    font-size: small;
+    color: green
+  }
+  .task-unfinished{
+    font-size: small;
+    color: red
   }
 </style>
 <body>
@@ -46,6 +65,35 @@
         <input type="submit" value="Submit the task"/>
       </form>
     </div>
+    <div class="child-container">
+      <ul id="task-list"></ul>
+    </div>
   </div>
 </body>
+<script>
+  let taskList = document.getElementById("task-list")
+  function renderTask(task){
+    taskList.insertAdjacentHTML('beforebegin',
+    `<li class="task-list-element">
+      Team: ${task.team_name} <br/>
+      <p> 
+        Description: <br/>
+        <span class="task-description">${task.description}</span>
+      </p> <br/>
+      Start date: ${task.start_date} <br/>
+      Final date: ${task.final_date} <br/>
+      ${(() => {
+        if (task.is_finished){
+          return "<span class='task-finished'>This task is finished.</span>"
+        }
+        return "<span class='task-unfinished'>This task isn't finished.</span>"
+      })()}
+    </li>`)
+  }
+  async function renderAllTasks(team_name){
+    const tasks = await (await fetch("/list_tasks/" + team_name)).json()
+    tasks.forEach(task => renderTask(task))
+  }
+  renderAllTasks("")
+</script>
 </html>

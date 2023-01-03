@@ -1,7 +1,10 @@
 require("dotenv").config()
 const {Sequelize, Model, DataTypes} = require("sequelize")
 
-const sequelize = new Sequelize(`postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:5432/${process.env.DB_NAME}`)
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: 'postgres'
+})
 
 var TaskModel = sequelize.define('Tasks', {
   id: {
@@ -16,8 +19,11 @@ var TaskModel = sequelize.define('Tasks', {
     type: DataTypes.DATEONLY,
     defaultValue: DataTypes.NOW
   },
-  final_date: DataTypes.DATE,
-  is_finished: DataTypes.BOOLEAN
+  final_date: DataTypes.DATEONLY,
+  is_finished: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  }
 }, {
   timestamps: false
 })
